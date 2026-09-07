@@ -38,6 +38,7 @@
             align-items: center;
             margin-bottom: 10px;
             font-weight: 500;
+            font-size: 12px;
         }
         .legend-item:last-child {
             margin-bottom: 0;
@@ -69,6 +70,18 @@
             color: #666;
             margin-top: 5px;
         }
+        .instructions {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+            font-size: 12px;
+            max-width: 250px;
+        }
     </style>
 </head>
 <body>
@@ -76,24 +89,36 @@
         <div id="map"></div>
         <div class="title">
             <h1>Northern Illinois Territories</h1>
-            <p>Territory Map</p>
+            <p>Territory Map with Road/River Boundaries</p>
+        </div>
+        <div class="instructions">
+            <strong>Boundary Guide:</strong>
+            <ul style="margin-left: 20px; margin-top: 8px;">
+                <li><strong>Linda:</strong> River to Route 47 / I90 to Route 31 / Route 34 to I39/I88</li>
+                <li><strong>Dave:</strong> East of Linda to I55</li>
+                <li><strong>Nick:</strong> South of I55 to I74 / I74 to River</li>
+            </ul>
         </div>
         <div class="legend">
             <div class="legend-item">
-                <div class="legend-color" style="background-color: rgba(52, 152, 219, 0.4);"></div>
-                <span>Linda's Territory</span>
+                <div class="legend-color" style="background-color: rgba(52, 152, 219, 0.5);"></div>
+                <span><strong>Linda's Territory</strong></span>
             </div>
             <div class="legend-item">
-                <div class="legend-color" style="background-color: rgba(46, 204, 113, 0.4);"></div>
-                <span>Dave's Territory</span>
+                <div class="legend-color" style="background-color: rgba(46, 204, 113, 0.5);"></div>
+                <span><strong>Dave's Territory</strong></span>
             </div>
             <div class="legend-item">
-                <div class="legend-color" style="background-color: rgba(231, 76, 60, 0.4);"></div>
-                <span>Nick's Territory</span>
+                <div class="legend-color" style="background-color: rgba(231, 76, 60, 0.5);"></div>
+                <span><strong>Nick's Territory</strong></span>
             </div>
             <div class="legend-item">
-                <div class="legend-color" style="background-color: rgba(155, 89, 182, 0.4);"></div>
-                <span>Interstate/Route</span>
+                <div class="legend-color" style="background-color: rgba(155, 89, 182, 1); border: 1px solid #333;"></div>
+                <span>Highway Boundaries</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: rgba(52, 180, 235, 1); border: 1px solid #333;"></div>
+                <span>Rivers</span>
             </div>
         </div>
     </div>
