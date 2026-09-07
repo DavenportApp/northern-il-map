@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Northern Illinois Territory Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+        }
+        #mapContainer {
+            display: flex;
+            height: 100vh;
+        }
+        #map {
+            flex: 1;
+            height: 100%;
+        }
+        .legend {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        .legend-item:last-child {
+            margin-bottom: 0;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            border-radius: 3px;
+            border: 2px solid #333;
+        }
+        .title {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+        .title h1 {
+            font-size: 24px;
+            margin: 0;
+            color: #333;
+        }
+        .title p {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="mapContainer">
+        <div id="map"></div>
+        <div class="title">
+            <h1>Northern Illinois Territories</h1>
+            <p>Territory Map</p>
+        </div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: rgba(52, 152, 219, 0.4);"></div>
+                <span>Linda's Territory</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: rgba(46, 204, 113, 0.4);"></div>
+                <span>Dave's Territory</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: rgba(231, 76, 60, 0.4);"></div>
+                <span>Nick's Territory</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: rgba(155, 89, 182, 0.4);"></div>
+                <span>Interstate/Route</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="map.js"></script>
+</body>
+</html>
