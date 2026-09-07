@@ -1,200 +1,201 @@
-// Initialize map centered on Northern Illinois with Google Maps
+// Initialize map centered on Northern Illinois
 const map = L.map('map').setView([41.8, -88.5], 9);
 
-// Add Google Maps layer
-L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
-    maxZoom: 20,
-    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-    attribution: '&copy; Google Maps'
+// Add Stamen TonerLite layer - works great for local files and shows roads clearly
+L.tileLayer('https://tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors, &copy; Hydda',
+    maxZoom: 18
 }).addTo(map);
 
-// Precise coordinates for Northern Illinois boundaries based on actual roads and rivers
+// Precise coordinates for Northern Illinois boundaries
 const coordinates = {
-    // Major rivers and water boundaries
-    rockRiverWest: -89.52,
-    illinoisRiver: -89.48,
-    
-    // Route 47 (runs north-south, eastern edge of Linda's territory)
-    route47Lat: -88.08,
-    
-    // Interstate 90 (runs east-west, northern boundary)
-    i90Lat: 41.84,
-    
-    // Route 31 (runs north-south)
-    route31Lon: -88.30,
-    
-    // Route 34 (runs east-west)
-    route34Lat: 41.75,
-    
-    // Interstate 39 (runs north-south)
-    i39Lon: -88.62,
-    
-    // Interstate 88 (runs east-west, southern boundary of Linda)
-    i88Lat: 41.55,
-    
-    // Interstate 55 (runs diagonally, southern boundary of Dave)
-    i55Lat: 41.65,
-    
-    // Interstate 74 (runs east-west, southern boundary of Nick)
-    i74Lat: 41.15
+    riverWest: -89.50,
+    route47: -88.08,
+    i90: 41.84,
+    route31: -88.30,
+    route34: 41.75,
+    i39: -88.62,
+    i88: 41.55,
+    i55: 41.65,
+    i74: 41.15
 };
 
 // LINDA'S TERRITORY - Northeast corner
-// Bounded by: River (west) → Route 47 (east) → I90 (south) → Route 31 → Route 34 → I39 → I88 → River
+// River (west) → Route 47 (east) → I90 (south) → Route 31 → Route 34 → I39 → I88 → River
 const lindaBoundary = [
-    [42.15, coordinates.rockRiverWest],      // NW corner at river
-    [42.15, coordinates.route47Lat],         // NE corner at Route 47
-    [coordinates.i90Lat, coordinates.route47Lat],     // SE at I90/Route 47
-    [coordinates.i90Lat, coordinates.route31Lon],     // I90 runs to Route 31
-    [41.88, coordinates.route31Lon],         // Route 31 running south
-    [41.80, coordinates.route34Lat],         // Route 34 intersection
-    [41.70, coordinates.i39Lon],             // I39 junction
-    [coordinates.i88Lat, coordinates.i39Lon],        // I88/I39 intersection
-    [coordinates.i88Lat, coordinates.rockRiverWest], // I88 west to river
-    [42.15, coordinates.rockRiverWest]      // Back to NW corner
+    [42.15, coordinates.riverWest],           // NW corner at river
+    [42.15, coordinates.route47],             // NE corner at Route 47
+    [coordinates.i90, coordinates.route47],   // SE at I90/Route 47
+    [coordinates.i90, coordinates.route31],   // I90 to Route 31
+    [41.88, coordinates.route31],             // Route 31 south
+    [41.78, coordinates.route34],             // Route 34
+    [41.68, coordinates.i39],                 // I39 junction
+    [coordinates.i88, coordinates.i39],       // I88/I39 intersection
+    [coordinates.i88, coordinates.riverWest], // I88 west to river
+    [42.15, coordinates.riverWest]            // Back to NW
 ];
 
 // DAVE'S TERRITORY - East of Linda to I55
-// Bounded by: Route 31 (west) → I90 (north) → I55 (south/east) → back to Route 31
 const daveBoundary = [
-    [coordinates.i90Lat, coordinates.route31Lon],    // NW at I90/Route 31
-    [coordinates.i90Lat, -87.45],                     // NE at I90
-    [coordinates.i55Lat, -87.45],                     // SE corner
-    [coordinates.i55Lat, coordinates.route31Lon],     // SW at Route 31/I55
-    [coordinates.i90Lat, coordinates.route31Lon]     // Back to start
+    [coordinates.i90, coordinates.route31],   // NW at I90/Route 31
+    [coordinates.i90, -87.45],                // NE at I90
+    [coordinates.i55, -87.45],                // SE corner
+    [coordinates.i55, coordinates.route31],   // SW at Route 31/I55
+    [coordinates.i90, coordinates.route31]    // Back to start
 ];
 
 // NICK'S TERRITORY - South of I55 to I74
-// Bounded by: I55 (north) → I74 (south) → River (west) → back to I55
 const nickBoundary = [
-    [coordinates.i55Lat, coordinates.i39Lon],        // NW at I55/I39 area
-    [coordinates.i55Lat, -87.45],                     // NE at I55
-    [coordinates.i74Lat, -87.45],                     // SE at I74
-    [coordinates.i74Lat, coordinates.rockRiverWest], // SW at I74/River
-    [coordinates.i55Lat, coordinates.rockRiverWest], // NW at I55/River
-    [coordinates.i55Lat, coordinates.i39Lon]         // Back to start
+    [coordinates.i55, coordinates.i39],       // NW at I55/I39
+    [coordinates.i55, -87.45],                // NE at I55
+    [coordinates.i74, -87.45],                // SE at I74
+    [coordinates.i74, coordinates.riverWest], // SW at I74/River
+    [coordinates.i55, coordinates.riverWest], // NW at I55/River
+    [coordinates.i55, coordinates.i39]        // Back to start
 ];
 
-// Draw territory polygons
+// Draw territory polygons with bold outlines
 const lindaTerritory = L.polygon(lindaBoundary, {
     color: '#3498db',
-    weight: 3,
-    opacity: 0.8,
+    weight: 4,
+    opacity: 0.9,
     fillColor: '#3498db',
-    fillOpacity: 0.3
+    fillOpacity: 0.25,
+    lineCap: 'round',
+    lineJoin: 'round'
 }).addTo(map);
-lindaTerritory.bindPopup('<strong>Linda\'s Territory</strong><br><strong>Boundaries:</strong><br>• West: Rock River<br>• East: Route 47<br>• North: Route 47 line<br>• South: I88<br>• Via: I90 → Route 31 → Route 34 → I39');
+lindaTerritory.bindPopup('<div style="font-weight: bold; font-size: 14px;"><strong style="color: #3498db;">LINDA\'S TERRITORY</strong><br><strong>Boundaries:</strong><br>• West: Rock/Illinois River<br>• East: Route 47<br>• North: Route 47 line<br>• South: I88<br>• Via: I90 → Route 31 → Route 34 → I39</div>');
 
 const daveTerritory = L.polygon(daveBoundary, {
     color: '#2ecc71',
-    weight: 3,
-    opacity: 0.8,
+    weight: 4,
+    opacity: 0.9,
     fillColor: '#2ecc71',
-    fillOpacity: 0.3
+    fillOpacity: 0.25,
+    lineCap: 'round',
+    lineJoin: 'round'
 }).addTo(map);
-daveTerritory.bindPopup('<strong>Dave\'s Territory</strong><br><strong>Boundaries:</strong><br>• West: Route 31<br>• North: I90<br>• South: I55<br>• East: Open to state border');
+daveTerritory.bindPopup('<div style="font-weight: bold; font-size: 14px;"><strong style="color: #2ecc71;">DAVE\'S TERRITORY</strong><br><strong>Boundaries:</strong><br>• West: Route 31<br>• North: Interstate 90<br>• South: Interstate 55<br>• East: Open to state border</div>');
 
 const nickTerritory = L.polygon(nickBoundary, {
     color: '#e74c3c',
-    weight: 3,
-    opacity: 0.8,
+    weight: 4,
+    opacity: 0.9,
     fillColor: '#e74c3c',
-    fillOpacity: 0.3
+    fillOpacity: 0.25,
+    lineCap: 'round',
+    lineJoin: 'round'
 }).addTo(map);
-nickTerritory.bindPopup('<strong>Nick\'s Territory</strong><br><strong>Boundaries:</strong><br>• North: I55<br>• South: I74<br>• West: Illinois River<br>• East: State border');
+nickTerritory.bindPopup('<div style="font-weight: bold; font-size: 14px;"><strong style="color: #e74c3c;">NICK\'S TERRITORY</strong><br><strong>Boundaries:</strong><br>• North: Interstate 55<br>• South: Interstate 74<br>• West: Illinois River<br>• East: State border</div>');
 
-// Add territory center labels
-function addTerritorLabel(lat, lon, name, color) {
+// Add territory labels
+function addTerritoryLabel(lat, lon, name, color) {
     L.marker([lat, lon], {
         icon: L.divIcon({
             className: 'territory-label',
             html: `<div style="
                 background-color: ${color}; 
                 color: white; 
-                padding: 10px 15px; 
-                border-radius: 6px; 
+                padding: 12px 18px; 
+                border-radius: 8px; 
                 font-weight: bold; 
-                font-size: 16px;
-                border: 3px solid white;
-                box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+                font-size: 18px;
+                border: 4px solid white;
+                box-shadow: 0 3px 8px rgba(0,0,0,0.4);
                 text-align: center;
+                letter-spacing: 2px;
             ">${name}</div>`,
-            iconSize: [120, 45],
-            iconAnchor: [60, 22]
+            iconSize: [140, 50],
+            iconAnchor: [70, 25]
         })
     }).addTo(map);
 }
 
-addTerritorLabel(41.90, -88.80, 'LINDA', '#3498db');
-addTerritorLabel(41.75, -87.85, 'DAVE', '#2ecc71');
-addTerritorLabel(41.40, -88.50, 'NICK', '#e74c3c');
+addTerritoryLabel(41.90, -88.80, 'LINDA', '#3498db');
+addTerritoryLabel(41.75, -87.85, 'DAVE', '#2ecc71');
+addTerritoryLabel(41.40, -88.50, 'NICK', '#e74c3c');
 
-// Draw major highway/river boundary lines with labels
-const boundaryLineStyle = {
-    color: '#9b59b6',
+// Draw boundary lines tracing actual roads and rivers
+const highwayStyle = {
+    color: '#e67e22',
     weight: 3,
     opacity: 0.9,
-    dashArray: '5, 5'
+    dashArray: '8, 4',
+    lineCap: 'round'
 };
 
-const riverLineStyle = {
-    color: '#34b4eb',
+const riverStyle = {
+    color: '#3498db',
     weight: 4,
-    opacity: 0.9
+    opacity: 0.85,
+    lineCap: 'round',
+    lineJoin: 'round'
 };
 
-// Illinois/Rock River (western boundary)
+// ===== RIVERS =====
+// Rock/Illinois River - Western boundary (runs north-south)
 L.polyline([
-    [42.2, coordinates.rockRiverWest],
-    [41.1, coordinates.rockRiverWest]
-], riverLineStyle).addTo(map).bindPopup('Illinois/Rock River - Western Boundary');
+    [42.3, coordinates.riverWest],
+    [41.0, coordinates.riverWest]
+], { ...riverStyle, color: '#2980b9', weight: 5 }).addTo(map)
+.bindPopup('<strong style="color: #2980b9; font-size: 12px;">ROCK/ILLINOIS RIVER<br>Western Boundary</strong>');
 
-// Route 47 (eastern boundary of Linda)
+// ===== HIGHWAYS TRACING BOUNDARIES =====
+
+// Route 47 - Linda/Dave boundary (runs north-south on eastern edge)
 L.polyline([
-    [42.15, coordinates.route47Lat],
-    [41.5, coordinates.route47Lat]
-], boundaryLineStyle).addTo(map).bindPopup('Route 47 - Linda/Dave Boundary');
+    [42.2, coordinates.route47],
+    [41.5, coordinates.route47]
+], { ...highwayStyle, color: '#e67e22', weight: 3 }).addTo(map)
+.bindPopup('<strong style="color: #e67e22;">US ROUTE 47<br>Linda/Dave Eastern Boundary</strong>');
 
-// Interstate 90 (northern boundary)
+// Interstate 90 - Northern boundary (runs east-west)
 L.polyline([
-    [coordinates.i90Lat, coordinates.rockRiverWest],
-    [coordinates.i90Lat, -87.3]
-], { ...boundaryLineStyle, color: '#e67e22' }).addTo(map).bindPopup('Interstate 90 - Northern Boundary');
+    [coordinates.i90, coordinates.riverWest],
+    [coordinates.i90, -87.2]
+], { ...highwayStyle, weight: 4 }).addTo(map)
+.bindPopup('<strong style="color: #e67e22;">INTERSTATE 90<br>Northern Boundary</strong>');
 
-// Route 31 (Dave's west boundary)
+// Route 31 - Dave/Nick western boundary (runs north-south)
 L.polyline([
-    [42.0, coordinates.route31Lon],
-    [41.4, coordinates.route31Lon]
-], boundaryLineStyle).addTo(map).bindPopup('Route 31 - Dave/Nick Boundary');
+    [42.0, coordinates.route31],
+    [41.3, coordinates.route31]
+], { ...highwayStyle, color: '#27ae60', weight: 3 }).addTo(map)
+.bindPopup('<strong style="color: #27ae60;">US ROUTE 31<br>Dave/Nick Western Boundary</strong>');
 
-// Route 34 (Linda's southern transition)
+// Route 34 - Linda interior junction (runs east-west)
 L.polyline([
-    [coordinates.route34Lat, coordinates.rockRiverWest],
-    [coordinates.route34Lat, -87.8]
-], boundaryLineStyle).addTo(map).bindPopup('Route 34 - Linda Territory');
+    [coordinates.route34, coordinates.riverWest],
+    [coordinates.route34, -87.8]
+], { ...highwayStyle, color: '#c0392b', weight: 3 }).addTo(map)
+.bindPopup('<strong style="color: #c0392b;">US ROUTE 34<br>Linda Interior Transition</strong>');
 
-// Interstate 39 (Linda/Nick division)
+// Interstate 39 - Linda/Nick division (runs north-south)
 L.polyline([
-    [42.1, coordinates.i39Lon],
-    [41.2, coordinates.i39Lon]
-], { ...boundaryLineStyle, color: '#e67e22' }).addTo(map).bindPopup('Interstate 39 - Territory Marker');
+    [42.1, coordinates.i39],
+    [41.2, coordinates.i39]
+], { ...highwayStyle, weight: 3 }).addTo(map)
+.bindPopup('<strong style="color: #e67e22;">INTERSTATE 39<br>Linda/Nick Interior Marker</strong>');
 
-// Interstate 88 (Linda's southern boundary)
+// Interstate 88 - Linda southern boundary (runs east-west)
 L.polyline([
-    [coordinates.i88Lat, coordinates.rockRiverWest],
-    [coordinates.i88Lat, -87.3]
-], { ...boundaryLineStyle, color: '#e67e22' }).addTo(map).bindPopup('Interstate 88 - Linda/Nick Boundary');
+    [coordinates.i88, coordinates.riverWest],
+    [coordinates.i88, -87.2]
+], { ...highwayStyle, weight: 4 }).addTo(map)
+.bindPopup('<strong style="color: #e67e22;">INTERSTATE 88<br>Linda/Nick Southern Boundary</strong>');
 
-// Interstate 55 (Dave's southern boundary)
+// Interstate 55 - Dave/Nick southern boundary (runs diagonally)
 L.polyline([
-    [coordinates.i55Lat, coordinates.i39Lon],
-    [coordinates.i55Lat, -87.5]
-], { ...boundaryLineStyle, color: '#e67e22' }).addTo(map).bindPopup('Interstate 55 - Dave/Nick Boundary');
+    [coordinates.i55, coordinates.i39],
+    [coordinates.i55, -87.5]
+], { ...highwayStyle, weight: 4 }).addTo(map)
+.bindPopup('<strong style="color: #e67e22;">INTERSTATE 55<br>Dave/Nick Southern Boundary</strong>');
 
-// Interstate 74 (Nick's southern boundary)
+// Interstate 74 - Nick southern boundary (runs east-west)
 L.polyline([
-    [coordinates.i74Lat, coordinates.rockRiverWest],
-    [coordinates.i74Lat, -87.4]
-], { ...boundaryLineStyle, color: '#e67e22' }).addTo(map).bindPopup('Interstate 74 - Southern Nick Boundary');
+    [coordinates.i74, coordinates.riverWest],
+    [coordinates.i74, -87.4]
+], { ...highwayStyle, weight: 4 }).addTo(map)
+.bindPopup('<strong style="color: #e67e22;">INTERSTATE 74<br>Nick Southern Boundary</strong>');
 
-console.log('Northern Illinois Territory Map with Google Maps loaded successfully');
+console.log('Northern Illinois Territory Map with road/river boundaries loaded successfully');
